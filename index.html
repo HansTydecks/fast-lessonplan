@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stundenverlaufsplan-Ersteller</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Stundenverlaufsplan-Ersteller</h1>
+        </header>
+
+        <main>
+            <!-- Grundeinstellungen -->
+            <section class="basic-info">
+                <div class="input-group">
+                    <label for="lesson-title">Stundentitel:</label>
+                    <input type="text" id="lesson-title" placeholder="Titel der Unterrichtsstunde eingeben...">
+                </div>
+                
+                <div class="input-group">
+                    <label for="start-time">Startzeit:</label>
+                    <input type="time" id="start-time" value="08:00">
+                </div>
+            </section>
+
+            <!-- Lernziele -->
+            <section class="learning-objectives">
+                <h2>Lernziele</h2>
+                <div id="objectives-container">
+                    <div class="objective-item">
+                        <input type="text" class="objective-input" placeholder="Lernziel eingeben...">
+                        <button type="button" class="remove-objective" style="display: none;">✕</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Unterrichtsphasen -->
+            <section class="lesson-phases">
+                <h2>Unterrichtsphasen</h2>
+                <div id="phases-container">
+                    <!-- Phasen werden hier dynamisch hinzugefügt -->
+                </div>
+                <button type="button" id="add-phase" class="add-btn">+ Neue Phase</button>
+            </section>
+
+            <!-- Aktionen -->
+            <section class="actions">
+                <div class="action-buttons">
+                    <button type="button" id="export-pdf" class="primary-btn">📄 PDF Exportieren</button>
+                    <button type="button" id="export-json" class="secondary-btn">💾 JSON Speichern</button>
+                    <button type="button" id="import-json" class="secondary-btn">📂 JSON Laden</button>
+                    <input type="file" id="json-file-input" accept=".json" style="display: none;">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Template für Unterrichtsphasen -->
+    <template id="phase-template">
+        <div class="phase-header">
+            <span class="phase-number">Phase 1</span>
+            <div class="phase-controls">
+                <button type="button" class="move-up" title="Nach oben">↑</button>
+                <button type="button" class="move-down" title="Nach unten">↓</button>
+                <button type="button" class="remove-phase" title="Entfernen">✕</button>
+            </div>
+        </div>
+        <div class="phase-content">
+            <div class="input-row">
+                <div class="input-group duration">
+                    <label>Dauer (Min):</label>
+                    <input type="number" class="duration-input" min="1" value="10">
+                </div>
+                <div class="input-group time-display">
+                    <label>Zeitraum:</label>
+                    <span class="time-range">08:00 - 08:10</span>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Sozialform:</label>
+                    <select class="social-form">
+                        <option value="Einzelarbeit">Einzelarbeit</option>
+                        <option value="Partnerarbeit">Partnerarbeit</option>
+                        <option value="Gruppenarbeit">Gruppenarbeit</option>
+                        <option value="Plenum">Plenum</option>
+                        <option value="Lehrer-Schüler-Gespräch">Lehrer-Schüler-Gespräch</option>
+                        <option value="Stillarbeit">Stillarbeit</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Titel/Aufgabe:</label>
+                    <input type="text" class="task-title" placeholder="Titel der Unterrichtsphase...">
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-group full-width">
+                    <label>Durchführung:</label>
+                    <textarea class="implementation" rows="4" placeholder="Beschreibung der Durchführung...
+• Bulletpoint 1
+• Bulletpoint 2"></textarea>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-group full-width">
+                    <label>Material/Tafelbild:</label>
+                    <textarea class="materials" rows="2" placeholder="Material und Tafelbild..."></textarea>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
