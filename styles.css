@@ -452,3 +452,226 @@ section h2 {
 .objective-item.new {
     animation: slideIn 0.3s ease;
 }
+
+/* Layout für Zeit und KI-Button */
+.time-and-ai {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.time-input-group {
+    flex: 0 0 auto;
+}
+
+/* KI-Prompt Button Styles */
+.ai-btn {
+    background: linear-gradient(135deg, var(--accent-color), #9d4edd);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ai-btn:hover {
+    background: linear-gradient(135deg, #9d4edd, var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.ai-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 5% auto;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, var(--card-bg), rgba(139, 69, 255, 0.1));
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.close {
+    color: var(--text-secondary);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.close:hover {
+    color: var(--accent-color);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body p {
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+#ai-prompt-text {
+    width: 100%;
+    height: 400px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #ffffff;
+    resize: vertical;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+#ai-prompt-text:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(139, 69, 255, 0.2);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.primary-btn, .secondary-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 14px;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--accent-color), #9d4edd);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #9d4edd, var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.secondary-btn {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.secondary-btn:hover {
+    background: var(--border-color);
+    border-color: var(--accent-color);
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10px;
+        width: calc(100% - 20px);
+        max-height: 90vh;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    #ai-prompt-text {
+        height: 300px;
+        font-size: 12px;
+    }
+    
+    .modal-actions {
+        justify-content: stretch;
+    }
+    
+    .primary-btn, .secondary-btn {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .time-and-ai {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .ai-btn {
+        justify-content: center;
+    }
+}

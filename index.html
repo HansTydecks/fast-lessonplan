@@ -22,9 +22,14 @@
                     <input type="text" id="lesson-title" placeholder="Titel der Unterrichtsstunde eingeben...">
                 </div>
                 
-                <div class="input-group">
-                    <label for="start-time">Startzeit:</label>
-                    <input type="time" id="start-time" value="08:00">
+                <div class="time-and-ai">
+                    <div class="input-group">
+                        <label for="start-time">Startzeit:</label>
+                        <input type="time" id="start-time" value="08:00">
+                    </div>
+                    <button type="button" id="ai-prompt-btn" class="ai-btn" title="KI-Prompt für Stundenerstellung">
+                        🤖 KI-Prompt
+                    </button>
                 </div>
             </section>
 
@@ -58,6 +63,71 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- KI-Prompt Modal -->
+    <div id="ai-prompt-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🤖 KI-Prompt für Stundenerstellung</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>Kopieren Sie diesen Prompt und verwenden Sie ihn in Ihrem bevorzugten KI-Chat:</strong></p>
+                <textarea id="ai-prompt-text" readonly>Du bist ein Experte für Unterrichtsplanung. Erstelle basierend auf dem folgenden Kontext einen detaillierten Stundenverlaufsplan.
+
+WICHTIG: Antworte ausschließlich mit einem gültigen JSON-Objekt im folgenden Format (ohne zusätzlichen Text):
+
+{
+  "lessonTitle": "Titel der Stunde",
+  "startTime": "08:00",
+  "objectives": [
+    "Lernziel 1",
+    "Lernziel 2",
+    "Lernziel 3"
+  ],
+  "phases": [
+    {
+      "duration": 10,
+      "socialForm": "Plenum",
+      "taskTitle": "Einstieg",
+      "implementation": "• Begrüßung der Schüler\n• Wiederholung der letzten Stunde\n• Hinführung zum Thema",
+      "materials": "Tafel, Arbeitsblatt"
+    },
+    {
+      "duration": 20,
+      "socialForm": "Einzelarbeit",
+      "taskTitle": "Erarbeitung",
+      "implementation": "• Schüler bearbeiten Aufgaben\n• Lehrer unterstützt individuell\n• Schwierigkeiten werden besprochen",
+      "materials": "Arbeitsblatt, Stifte"
+    },
+    {
+      "duration": 15,
+      "socialForm": "Plenum",
+      "taskTitle": "Sicherung",
+      "implementation": "• Ergebnisse werden präsentiert\n• Gemeinsame Reflexion\n• Zusammenfassung der Lerninhalte",
+      "materials": "Tafel"
+    }
+  ],
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "version": "1.0"
+}
+
+Gültige Sozialformen: "Einzelarbeit", "Partnerarbeit", "Gruppenarbeit", "Plenum", "Lehrer-Schüler-Gespräch", "Stillarbeit"
+
+KONTEXT FÜR DIE STUNDENERSTELLUNG:
+[Hier fügen Sie Ihren gewünschten Stundenkontext ein, z.B.:
+- Fach: Mathematik
+- Klassenstufe: 7. Klasse
+- Thema: Prozentrechnung
+- Dauer: 45 Minuten
+- Besonderheiten: Einführungsstunde, heterogene Lerngruppe]</textarea>
+                <div class="modal-actions">
+                    <button type="button" id="copy-prompt" class="primary-btn">📋 Prompt kopieren</button>
+                    <button type="button" class="secondary-btn close-modal">Schließen</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Template für Unterrichtsphasen -->

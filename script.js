@@ -486,3 +486,84 @@ function showMessage(text, type) {
         }
     }, 5000);
 }
+
+// KI-Prompt Modal Funktionalität
+document.addEventListener('DOMContentLoaded', function() {
+    const aiPromptBtn = document.getElementById('ai-prompt-btn');
+    const modal = document.getElementById('ai-prompt-modal');
+    const closeBtn = modal.querySelector('.close');
+    const copyBtn = document.getElementById('copy-prompt');
+    const closeModalBtns = modal.querySelectorAll('.close-modal');
+
+    // Modal öffnen
+    aiPromptBtn.addEventListener('click', function() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Modal schließen - X Button
+    closeBtn.addEventListener('click', function() {
+        closeModal();
+    });
+
+    // Modal schließen - Schließen Buttons
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            closeModal();
+        });
+    });
+
+    // Modal schließen bei Klick außerhalb
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // ESC Taste zum Schließen
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            closeModal();
+        }
+    });
+
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Prompt kopieren
+    copyBtn.addEventListener('click', async function() {
+        const promptText = document.getElementById('ai-prompt-text');
+        try {
+            await navigator.clipboard.writeText(promptText.value);
+            
+            // Feedback für erfolgreiches Kopieren
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✅ Kopiert!';
+            copyBtn.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = 'linear-gradient(135deg, var(--accent-color), #9d4edd)';
+            }, 2000);
+            
+        } catch (err) {
+            console.error('Fehler beim Kopieren: ', err);
+            
+            // Fallback für ältere Browser
+            promptText.select();
+            promptText.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✅ Kopiert!';
+            copyBtn.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = 'linear-gradient(135deg, var(--accent-color), #9d4edd)';
+            }, 2000);
+        }
+    });
+});
