@@ -29,12 +29,15 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    flex: 1;
 }
 
 /* Header */
@@ -678,7 +681,7 @@ section h2 {
 
 /* Footer Styles */
 footer {
-    margin-top: 50px;
+    margin-top: auto;
     padding: 30px 0;
     border-top: 2px solid var(--border-color);
     background-color: var(--bg-secondary);
@@ -723,7 +726,7 @@ footer {
 /* Responsive footer */
 @media (max-width: 768px) {
     footer {
-        margin-top: 30px;
+        margin-top: auto;
         padding: 20px 0;
     }
     
