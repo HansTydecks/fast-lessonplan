@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
     <title>Lessplan</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -74,7 +75,7 @@
             </div>
             <div class="modal-body">
                 <p><strong>Kopieren Sie diesen Prompt und verwenden Sie ihn in Ihrem bevorzugten KI-Chat:</strong></p>
-                <textarea id="ai-prompt-text" readonly>Du bist ein Experte für Unterrichtsplanung. Erstelle basierend auf dem folgenden Kontext einen detaillierten Stundenverlaufsplan.
+                <textarea id="ai-prompt-text" readonly>Du bist ein Experte für Unterrichtsplanung. Erstelle basierend auf dem folgenden Kontext und dem Konzept, das wir in diesem Chat ausgearbeitet haben einen detaillierten Stundenverlaufsplan in der Sprache Deutsch.
 
 WICHTIG: Antworte ausschließlich mit einem gültigen JSON-Objekt im folgenden Format (ohne zusätzlichen Text):
 
@@ -115,13 +116,8 @@ WICHTIG: Antworte ausschließlich mit einem gültigen JSON-Objekt im folgenden F
 
 Gültige Sozialformen: "Einzelarbeit", "Partnerarbeit", "Gruppenarbeit", "Plenum", "Lehrer-Schüler-Gespräch", "Stillarbeit"
 
-KONTEXT FÜR DIE STUNDENERSTELLUNG:
-[Hier fügen Sie Ihren gewünschten Stundenkontext ein, z.B.:
-- Fach: Mathematik
-- Klassenstufe: 7. Klasse
-- Thema: Prozentrechnung
-- Dauer: 45 Minuten
-- Besonderheiten: Einführungsstunde, heterogene Lerngruppe]</textarea>
+KONTEXT FÜR DIE STUNDENERSTELLUNG: Beachte alle Besonderheiten und Verläufe, die in diesem Chat besprochen wurden. Solltest du Fragen haben, stelle sie bevor du den Stundenplan erstellst. 
+</textarea>
                 <div class="modal-actions">
                     <button type="button" id="copy-prompt" class="primary-btn">📋 Prompt kopieren</button>
                     <button type="button" class="secondary-btn close-modal">Schließen</button>
