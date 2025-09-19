@@ -675,3 +675,69 @@ section h2 {
         justify-content: center;
     }
 }
+
+/* Footer Styles */
+footer {
+    margin-top: 50px;
+    padding: 30px 0;
+    border-top: 2px solid var(--border-color);
+    background-color: var(--bg-secondary);
+}
+
+.impressum {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.impressum p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.impressum a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    margin: 0 8px;
+    transition: color 0.3s ease;
+}
+
+.impressum a:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
+
+.impressum a:first-of-type::before {
+    content: "";
+    margin-right: 8px;
+}
+
+.impressum a:not(:last-of-type)::after {
+    content: " |";
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+    footer {
+        margin-top: 30px;
+        padding: 20px 0;
+    }
+    
+    .impressum p {
+        font-size: 0.8rem;
+        line-height: 1.6;
+    }
+    
+    .impressum a {
+        margin: 0 4px;
+        display: inline-block;
+    }
+    
+    .impressum a:not(:last-of-type)::after {
+        margin-left: 4px;
+    }
+}
