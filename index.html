@@ -4,182 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon.png">
-    <title>Lessplan</title>
+    <title>Lessplan - Unterrichtsplanung leicht gemacht</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
-<body>
-    <div class="container">
-        <header>
+<body class="landing-page">
+    <div class="landing-container">
+        <header class="landing-header">
             <h1>📚 Lessplan</h1>
+            <p class="subtitle">Unterrichtsplanung leicht gemacht</p>
         </header>
 
-        <main>
-            <!-- Grundeinstellungen -->
-            <section class="basic-info">
-                <div class="input-group">
-                    <label for="lesson-title">Stundentitel:</label>
-                    <input type="text" id="lesson-title" placeholder="Titel der Unterrichtsstunde eingeben...">
-                </div>
-                
-                <div class="time-and-ai">
-                    <div class="input-group">
-                        <label for="start-time">Startzeit:</label>
-                        <input type="time" id="start-time" value="08:00">
-                    </div>
-                    <button type="button" id="ai-prompt-btn" class="ai-btn" title="KI-Prompt für Stundenerstellung">
-                        🤖 KI-Prompt
-                    </button>
-                </div>
-            </section>
+        <main class="landing-main">
+            <div class="tool-selection">
+                <a href="stundenverlaufsplan.html" class="tool-card glass-card">
+                    <div class="tool-icon">📝</div>
+                    <h2>Stundenverlaufsplan</h2>
+                    <p>Detaillierte Planung einzelner Unterrichtsstunden mit Phasen, Zeiten und Materialien.</p>
+                    <span class="tool-arrow">→</span>
+                </a>
 
-            <!-- Lernziele -->
-            <section class="learning-objectives">
-                <h2>Lernziele</h2>
-                <div id="objectives-container">
-                    <div class="objective-item">
-                        <input type="text" class="objective-input" placeholder="Lernziel eingeben...">
-                        <button type="button" class="remove-objective" style="display: none;">✕</button>
-                    </div>
-                </div>
-            </section>
+                <a href="stoffverteilungsplan.html" class="tool-card glass-card">
+                    <div class="tool-icon">📋</div>
+                    <h2>Stoffverteilungsplan</h2>
+                    <p>Grobplanung für das gesamte Schuljahr mit automatischer Terminberechnung.</p>
+                    <span class="tool-arrow">→</span>
+                </a>
+            </div>
 
-            <!-- Unterrichtsphasen -->
-            <section class="lesson-phases">
-                <h2>Unterrichtsphasen</h2>
-                <div id="phases-container">
-                    <!-- Phasen werden hier dynamisch hinzugefügt -->
-                </div>
-                <button type="button" id="add-phase" class="add-btn">+ Neue Phase</button>
-            </section>
-
-            <!-- Aktionen -->
-            <section class="actions">
-                <div class="action-buttons">
-                    <button type="button" id="export-pdf" class="primary-btn">📄 PDF Exportieren</button>
-                    <button type="button" id="export-json" class="secondary-btn">💾 JSON Speichern</button>
-                    <button type="button" id="import-json" class="secondary-btn">📂 JSON Laden</button>
-                    <input type="file" id="json-file-input" accept=".json" style="display: none;">
-                </div>
+            <section class="features glass-card">
+                <h3>✨ Features</h3>
+                <ul>
+                    <li>🚀 Schnelle und intuitive Bedienung</li>
+                    <li>📄 Export als PDF oder JSON</li>
+                    <li>📂 Vorlagen laden und speichern</li>
+                    <li>🤖 KI-Prompt-Generator für Stundenplanung</li>
+                    <li>📅 Automatische Terminberechnung</li>
+                    <li>💾 Alles lokal – keine Daten in der Cloud</li>
+                </ul>
             </section>
         </main>
     </div>
-
-    <!-- KI-Prompt Modal -->
-    <div id="ai-prompt-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>🤖 KI-Prompt für Stundenerstellung</h2>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p><strong>Kopieren Sie diesen Prompt und verwenden Sie ihn in Ihrem bevorzugten KI-Chat:</strong></p>
-                <textarea id="ai-prompt-text" readonly>Du bist ein Experte für Unterrichtsplanung. Erstelle basierend auf dem folgenden Kontext und dem Konzept, das wir in diesem Chat ausgearbeitet haben einen detaillierten Stundenverlaufsplan in der Sprache Deutsch.
-
-WICHTIG: Antworte ausschließlich mit einem gültigen JSON-Objekt im folgenden Format (ohne zusätzlichen Text):
-
-{
-  "lessonTitle": "Titel der Stunde",
-  "startTime": "08:00",
-  "objectives": [
-    "Lernziel 1",
-    "Lernziel 2",
-    "Lernziel 3"
-  ],
-  "phases": [
-    {
-      "duration": 10,
-      "socialForm": "Plenum",
-      "taskTitle": "Einstieg",
-      "implementation": "• Begrüßung der Schüler\n• Wiederholung der letzten Stunde\n• Hinführung zum Thema",
-      "materials": "Tafel, Arbeitsblatt"
-    },
-    {
-      "duration": 20,
-      "socialForm": "Einzelarbeit",
-      "taskTitle": "Erarbeitung",
-      "implementation": "• Schüler bearbeiten Aufgaben\n• Lehrer unterstützt individuell\n• Schwierigkeiten werden besprochen",
-      "materials": "Arbeitsblatt, Stifte"
-    },
-    {
-      "duration": 15,
-      "socialForm": "Plenum",
-      "taskTitle": "Sicherung",
-      "implementation": "• Ergebnisse werden präsentiert\n• Gemeinsame Reflexion\n• Zusammenfassung der Lerninhalte",
-      "materials": "Tafel"
-    }
-  ],
-  "createdAt": "2024-01-01T00:00:00.000Z",
-  "version": "1.0"
-}
-
-Gültige Sozialformen: "Einzelarbeit", "Partnerarbeit", "Gruppenarbeit", "Plenum", "Lehrer-Schüler-Gespräch", "Stillarbeit"
-
-KONTEXT FÜR DIE STUNDENERSTELLUNG: Beachte alle Besonderheiten und Verläufe, die in diesem Chat besprochen wurden. Solltest du Fragen haben, stelle sie bevor du den Stundenplan erstellst. 
-</textarea>
-                <div class="modal-actions">
-                    <button type="button" id="copy-prompt" class="primary-btn">📋 Prompt kopieren</button>
-                    <button type="button" class="secondary-btn close-modal">Schließen</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Template für Unterrichtsphasen -->
-    <template id="phase-template">
-        <div class="phase-header">
-            <span class="phase-number">Phase 1</span>
-            <div class="phase-controls">
-                <button type="button" class="move-up" title="Nach oben">↑</button>
-                <button type="button" class="move-down" title="Nach unten">↓</button>
-                <button type="button" class="remove-phase" title="Entfernen">✕</button>
-            </div>
-        </div>
-        <div class="phase-content">
-            <div class="input-row">
-                <div class="input-group duration">
-                    <label>Dauer (Min):</label>
-                    <input type="number" class="duration-input" min="1" value="10">
-                </div>
-                <div class="input-group time-display">
-                    <label>Zeitraum:</label>
-                    <span class="time-range">08:00 - 08:10</span>
-                </div>
-            </div>
-            <div class="input-row">
-                <div class="input-group">
-                    <label>Sozialform:</label>
-                    <select class="social-form">
-                        <option value="Einzelarbeit">Einzelarbeit</option>
-                        <option value="Partnerarbeit">Partnerarbeit</option>
-                        <option value="Gruppenarbeit">Gruppenarbeit</option>
-                        <option value="Plenum">Plenum</option>
-                        <option value="Lehrer-Schüler-Gespräch">Lehrer-Schüler-Gespräch</option>
-                        <option value="Stillarbeit">Stillarbeit</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Titel/Aufgabe:</label>
-                    <input type="text" class="task-title" placeholder="Titel der Unterrichtsphase...">
-                </div>
-            </div>
-            <div class="input-row">
-                <div class="input-group full-width">
-                    <label>Durchführung:</label>
-                    <textarea class="implementation" rows="4" placeholder="Beschreibung der Durchführung...
-• Bulletpoint 1
-• Bulletpoint 2"></textarea>
-                </div>
-            </div>
-            <div class="input-row">
-                <div class="input-group full-width">
-                    <label>Material/Tafelbild:</label>
-                    <textarea class="materials" rows="2" placeholder="Material und Tafelbild..."></textarea>
-                </div>
-            </div>
-        </div>
-    </template>
 
     <footer>
         <div class="impressum">
@@ -193,7 +57,5 @@ KONTEXT FÜR DIE STUNDENERSTELLUNG: Beachte alle Besonderheiten und Verläufe, d
             </p>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Stoffverteilungsplan - Lessplan</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Zurück zur Auswahl</a>
+            <h1>📋 Stoffverteilungsplan</h1>
+        </header>
+
+        <main>
+            <!-- Grundinformationen -->
+            <section class="basic-info-stoffverteilung glass-card">
+                <h2>Grundinformationen</h2>
+                <div class="info-grid">
+                    <div class="input-group">
+                        <label for="subject">Fach:</label>
+                        <input type="text" id="subject" placeholder="z.B. Mathematik, Deutsch...">
+                    </div>
+                    <div class="input-group">
+                        <label for="class-name">Klasse:</label>
+                        <input type="text" id="class-name" placeholder="z.B. 7a, 10b...">
+                    </div>
+                    <div class="input-group">
+                        <label for="school-year">Schuljahr:</label>
+                        <input type="text" id="school-year" placeholder="z.B. 2025/2026">
+                    </div>
+                    <div class="input-group">
+                        <label for="teacher-name">Lehrkraft:</label>
+                        <input type="text" id="teacher-name" placeholder="Name der Lehrkraft">
+                    </div>
+                    <div class="input-group">
+                        <label for="federal-state">Bundesland:</label>
+                        <select id="federal-state">
+                            <option value="">-- Bitte wählen --</option>
+                            <option value="baden-wuerttemberg">Baden-Württemberg</option>
+                            <option value="bayern">Bayern</option>
+                            <option value="berlin">Berlin</option>
+                            <option value="brandenburg">Brandenburg</option>
+                            <option value="bremen">Bremen</option>
+                            <option value="hamburg">Hamburg</option>
+                            <option value="hessen">Hessen</option>
+                            <option value="mecklenburg-vorpommern">Mecklenburg-Vorpommern</option>
+                            <option value="niedersachsen">Niedersachsen</option>
+                            <option value="nordrhein-westfalen">Nordrhein-Westfalen</option>
+                            <option value="rheinland-pfalz">Rheinland-Pfalz</option>
+                            <option value="saarland">Saarland</option>
+                            <option value="sachsen">Sachsen</option>
+                            <option value="sachsen-anhalt">Sachsen-Anhalt</option>
+                            <option value="schleswig-holstein">Schleswig-Holstein</option>
+                            <option value="thueringen">Thüringen</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Zeitplanung -->
+            <section class="time-planning glass-card">
+                <h2>Zeitplanung für Lernabschnitt</h2>
+                <div class="time-grid">
+                    <div class="input-group">
+                        <label for="start-date">Startdatum:</label>
+                        <input type="date" id="start-date">
+                    </div>
+                    <div class="input-group">
+                        <label for="total-lesson-hours">Gesamtstunden Lernbereich:</label>
+                        <input type="number" id="total-lesson-hours" min="1" max="100" value="8" placeholder="z.B. 8">
+                    </div>
+                    <div class="input-group">
+                        <label for="hours-per-week">Stunden pro Woche:</label>
+                        <input type="number" id="hours-per-week" min="1" max="20" value="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Unterrichtstage:</label>
+                        <div class="weekday-selector">
+                            <label class="weekday-checkbox">
+                                <input type="checkbox" value="1"> Mo
+                            </label>
+                            <label class="weekday-checkbox">
+                                <input type="checkbox" value="2"> Di
+                            </label>
+                            <label class="weekday-checkbox">
+                                <input type="checkbox" value="3"> Mi
+                            </label>
+                            <label class="weekday-checkbox">
+                                <input type="checkbox" value="4"> Do
+                            </label>
+                            <label class="weekday-checkbox">
+                                <input type="checkbox" value="5"> Fr
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="calculated-info">
+                    <div class="info-box">
+                        <span class="info-label">Berechnetes Enddatum:</span>
+                        <span id="calculated-end-date" class="info-value">--</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-label">Unterrichtstermine:</span>
+                        <span id="calculated-days" class="info-value">0</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-label">Ferientage übersprungen:</span>
+                        <span id="excluded-days" class="info-value">0</span>
+                    </div>
+                </div>
+
+                <!-- Ferien-Optionen -->
+                <div class="vacation-options">
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="exclude-vacations" checked>
+                        <span>Schulferien ausschließen</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="exclude-holidays" checked>
+                        <span>Feiertage ausschließen</span>
+                    </label>
+                    <button type="button" id="load-vacations" class="small-btn">🔄 Ferien laden</button>
+                </div>
+
+                <!-- Ferien-Anzeige -->
+                <div id="vacation-display" class="vacation-display" style="display: none;">
+                    <h4>📅 Geladene Ferien & Feiertage</h4>
+                    <div id="vacation-list" class="vacation-list"></div>
+                </div>
+
+                <button type="button" id="generate-dates" class="secondary-btn">📅 Termine generieren</button>
+            </section>
+
+            <!-- Lernziele -->
+            <section class="learning-goals glass-card">
+                <h2>Jahresziele / Kompetenzen</h2>
+                <div id="goals-container">
+                    <div class="goal-item">
+                        <input type="text" class="goal-input" placeholder="Lernziel / Kompetenz eingeben...">
+                        <button type="button" class="remove-goal" style="display: none;">✕</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stoffverteilung Tabelle -->
+            <section class="distribution-table glass-card">
+                <h2>Stoffverteilung</h2>
+                <div class="table-container">
+                    <table id="distribution-table">
+                        <thead>
+                            <tr>
+                                <th class="col-week">KW</th>
+                                <th class="col-date">Datum</th>
+                                <th class="col-hours">Std.</th>
+                                <th class="col-topic">Thema / Inhalt</th>
+                                <th class="col-goals">Lernziele</th>
+                                <th class="col-methods">Methoden / Hinweise</th>
+                                <th class="col-assessment">Leistungskontrolle</th>
+                                <th class="col-actions">Aktion</th>
+                            </tr>
+                        </thead>
+                        <tbody id="distribution-body">
+                            <!-- Zeilen werden dynamisch hinzugefügt -->
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id="add-row" class="add-btn">+ Neue Zeile</button>
+            </section>
+
+            <!-- Aktionen -->
+            <section class="actions glass-card">
+                <div class="action-buttons">
+                    <button type="button" id="ai-prompt-btn" class="ai-btn" title="KI-Prompt für Stoffverteilungsplan">
+                        🤖 KI-Prompt
+                    </button>
+                    <button type="button" id="export-pdf" class="primary-btn">📄 PDF Exportieren</button>
+                    <button type="button" id="export-json" class="secondary-btn">💾 JSON Speichern</button>
+                    <button type="button" id="import-json" class="secondary-btn">📂 JSON Laden</button>
+                    <input type="file" id="json-file-input" accept=".json" style="display: none;">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Template für Tabellenzeilen -->
+    <template id="row-template">
+        <tr class="distribution-row">
+            <td class="col-week">
+                <input type="text" class="week-input" placeholder="KW">
+            </td>
+            <td class="col-date">
+                <input type="date" class="date-input">
+            </td>
+            <td class="col-hours">
+                <input type="number" class="hours-input" min="1" value="1">
+            </td>
+            <td class="col-topic">
+                <textarea class="topic-input" rows="2" placeholder="Thema..."></textarea>
+            </td>
+            <td class="col-goals">
+                <textarea class="goals-input" rows="2" placeholder="Lernziele..."></textarea>
+            </td>
+            <td class="col-methods">
+                <textarea class="methods-input" rows="2" placeholder="Methoden..."></textarea>
+            </td>
+            <td class="col-assessment">
+                <select class="assessment-select">
+                    <option value="">-</option>
+                    <option value="Klassenarbeit">Klassenarbeit</option>
+                    <option value="Test">Test</option>
+                    <option value="Projekt">Projekt</option>
+                    <option value="Präsentation">Präsentation</option>
+                    <option value="Mündlich">Mündliche Leistung</option>
+                    <option value="Sonstiges">Sonstiges</option>
+                </select>
+            </td>
+            <td class="col-actions">
+                <div class="row-controls">
+                    <button type="button" class="move-up-row" title="Nach oben">↑</button>
+                    <button type="button" class="move-down-row" title="Nach unten">↓</button>
+                    <button type="button" class="remove-row" title="Entfernen">✕</button>
+                </div>
+            </td>
+        </tr>
+    </template>
+
+    <!-- KI-Prompt Modal -->
+    <div id="ai-prompt-modal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h2>🤖 KI-Prompt für Stoffverteilungsplan</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>Kopieren Sie diesen Prompt und verwenden Sie ihn in Ihrem bevorzugten KI-Chat:</strong></p>
+                <p class="prompt-hint">💡 Die KI generiert nur die Inhalte. Termine und Stunden werden automatisch vom Programm berechnet (inkl. Ferien).</p>
+                <textarea id="ai-prompt-text" readonly>Du bist ein Experte für Unterrichtsplanung und Curriculum-Entwicklung. Erstelle basierend auf dem folgenden Kontext und dem Konzept, das wir in diesem Chat ausgearbeitet haben, einen Stoffverteilungsplan in der Sprache Deutsch.
+
+WICHTIG: Antworte ausschließlich mit einem gültigen JSON-Objekt im folgenden Format (ohne zusätzlichen Text):
+
+{
+  "type": "stoffverteilungsplan-content",
+  "subject": "Fachname",
+  "className": "Klassenbezeichnung",
+  "schoolYear": "2025/2026",
+  "teacherName": "Name der Lehrkraft (optional)",
+  "goals": [
+    "Übergeordnetes Lernziel 1",
+    "Übergeordnetes Lernziel 2",
+    "Kompetenz, die erworben werden soll"
+  ],
+  "content": [
+    {
+      "topic": "Einführung in das Thema",
+      "goals": "Grundlagen verstehen, Überblick gewinnen",
+      "methods": "Lehrervortrag, Diskussion",
+      "assessment": ""
+    },
+    {
+      "topic": "Vertiefung des Themas",
+      "goals": "Anwendung der Grundlagen",
+      "methods": "Gruppenarbeit, Übungen",
+      "assessment": ""
+    },
+    {
+      "topic": "Praktische Anwendung",
+      "goals": "Transfer auf neue Situationen",
+      "methods": "Projektarbeit, Partnerarbeit",
+      "assessment": "Test"
+    },
+    {
+      "topic": "Zusammenfassung und Reflexion",
+      "goals": "Festigung, Selbstevaluation",
+      "methods": "Wiederholung, Diskussion",
+      "assessment": "Klassenarbeit"
+    }
+  ]
+}
+
+HINWEISE:
+- Erstelle so viele "content"-Einträge wie Unterrichtstermine benötigt werden
+- Jeder Eintrag entspricht einem Unterrichtstermin (z.B. einer Doppelstunde)
+- Die Termine (Datum, KW, Stunden) werden automatisch vom Programm berechnet!
+- Gültige Leistungsnachweise: "", "Klassenarbeit", "Test", "Projekt", "Präsentation", "Mündlich", "Sonstiges"
+
+KONTEXT: Beachte alle Besonderheiten, Lehrplaninhalte und Vorgaben aus diesem Chat. Frage nach, falls etwas unklar ist.
+</textarea>
+                <div class="modal-actions">
+                    <button type="button" id="copy-prompt" class="primary-btn">📋 Prompt kopieren</button>
+                    <button type="button" class="secondary-btn close-modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="impressum">
+            <p>
+                Entwickelt für Lernende und Lehrende |
+                <a href="https://tinfo.space/teachers/Digitale_Tools/" target="_blank" rel="noopener">More apps and tools</a> 
+                <a href="http://contact.tinfo.space/" id="contact-link">Kontakt</a> 
+                <a href="https://linktr.ee/tinfo.space" target="_blank" rel="noopener">Links</a> 
+                <a href="https://github.com/HansTydecks" target="_blank" rel="noopener">GitHub</a> 
+                © 2025 Hans Tydecks
+            </p>
+        </div>
+    </footer>
+
+    <script src="stoffverteilungsplan.js"></script>
+</body>
+</html>
