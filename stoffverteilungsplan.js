@@ -710,7 +710,7 @@ function importFromJson(e) {
     if (!file) return;
     
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = async function(event) {
         try {
             const data = JSON.parse(event.target.result);
             
