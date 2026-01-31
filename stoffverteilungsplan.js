@@ -795,6 +795,46 @@ async function loadContentFromJson(data) {
         return;
     }
     
+    // Prüfe ob Termine generiert werden können
+    const hasStartDate = startDateInput.value;
+    const selectedDays = Array.from(weekdayCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => parseInt(cb.value));
+    const hasSelectedDays = selectedDays.length > 0;
+    
+    // Wenn keine Termineinstellungen vorhanden, lade Inhalte OHNE Termine
+    if (!hasStartDate || !hasSelectedDays) {
+        // Tabelle leeren und Inhalte ohne berechnete Termine laden
+        distributionBody.innerHTML = '';
+        
+        const hoursPerWeek = parseInt(hoursPerWeekInput.value) || 1;
+        const hoursPerDay = hasSelectedDays ? Math.ceil(hoursPerWeek / selectedDays.length) : 1;
+        
+        contentItems.forEach((content, index) => {
+            const template = rowTemplate.content.cloneNode(true);
+            const row = template.querySelector('tr');
+            
+            row.querySelector('.week-input').value = '';
+            row.querySelector('.date-input').value = '';
+            row.querySelector('.hours-input').value = hoursPerDay;
+            row.querySelector('.topic-input').value = content.topic || '';
+            row.querySelector('.goals-input').value = content.goals || '';
+            row.querySelector('.methods-input').value = content.methods || '';
+            row.querySelector('.assessment-select').value = content.assessment || '';
+            
+            distributionBody.appendChild(row);
+        });
+        
+        totalLessonHoursInput.value = contentItems.length * hoursPerDay;
+        updateRowButtons();
+        
+        let hint = '';
+        if (!hasStartDate) hint += 'Startdatum fehlt. ';
+        if (!hasSelectedDays) hint += 'Keine Wochentage ausgewählt. ';
+        showMessage(`${contentItems.length} Inhalte geladen! ${hint}Klicke "Termine generieren" um Daten zu berechnen.`, 'success');
+        return;
+    }
+    
     // Stelle sicher, dass Ferien geladen sind
     const bundesland = federalStateSelect.value;
     if (bundesland && cachedVacations.length === 0 && cachedHolidays.length === 0) {
@@ -810,20 +850,6 @@ async function loadContentFromJson(data) {
     // Termine generieren basierend auf den aktuellen Einstellungen
     const startDate = new Date(startDateInput.value);
     const hoursPerWeek = parseInt(hoursPerWeekInput.value) || 1;
-    
-    if (!startDateInput.value) {
-        showMessage('Bitte zuerst ein Startdatum eingeben.', 'error');
-        return;
-    }
-    
-    const selectedDays = Array.from(weekdayCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => parseInt(cb.value));
-    
-    if (selectedDays.length === 0) {
-        showMessage('Bitte mindestens einen Unterrichtstag auswählen.', 'error');
-        return;
-    }
     
     // Tabelle leeren
     distributionBody.innerHTML = '';
@@ -867,6 +893,7 @@ async function loadContentFromJson(data) {
     
     updateRowButtons();
     calculateDays();
+    showMessage(`${contentItems.length} Inhalte mit berechneten Terminen geladen!`, 'success');
 }
 
 function loadDataFromJson(data) {
