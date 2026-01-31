@@ -7,42 +7,72 @@ const FERIEN_API_BASE = 'https://www.mehr-schulferien.de/api/v2.1';
 let cachedVacations = [];
 let cachedHolidays = [];
 
-// DOM Elements
-const subjectInput = document.getElementById('subject');
-const classNameInput = document.getElementById('class-name');
-const schoolYearInput = document.getElementById('school-year');
-const teacherNameInput = document.getElementById('teacher-name');
-const federalStateSelect = document.getElementById('federal-state');
-const startDateInput = document.getElementById('start-date');
-const totalLessonHoursInput = document.getElementById('total-lesson-hours');
-const hoursPerWeekInput = document.getElementById('hours-per-week');
-const weekdayCheckboxes = document.querySelectorAll('.weekday-checkbox input');
-const calculatedEndDateSpan = document.getElementById('calculated-end-date');
-const calculatedDaysSpan = document.getElementById('calculated-days');
-const excludedDaysSpan = document.getElementById('excluded-days');
-const excludeVacationsCheckbox = document.getElementById('exclude-vacations');
-const excludeHolidaysCheckbox = document.getElementById('exclude-holidays');
-const loadVacationsBtn = document.getElementById('load-vacations');
-const vacationDisplay = document.getElementById('vacation-display');
-const vacationList = document.getElementById('vacation-list');
-const generateDatesBtn = document.getElementById('generate-dates');
-const goalsContainer = document.getElementById('goals-container');
-const distributionBody = document.getElementById('distribution-body');
-const addRowBtn = document.getElementById('add-row');
-const exportPdfBtn = document.getElementById('export-pdf');
-const exportJsonBtn = document.getElementById('export-json');
-const importJsonBtn = document.getElementById('import-json');
-const jsonFileInput = document.getElementById('json-file-input');
-const rowTemplate = document.getElementById('row-template');
+// DOM Elements - werden in init() initialisiert
+let subjectInput;
+let classNameInput;
+let schoolYearInput;
+let teacherNameInput;
+let federalStateSelect;
+let startDateInput;
+let totalLessonHoursInput;
+let hoursPerWeekInput;
+let weekdayCheckboxes;
+let calculatedEndDateSpan;
+let calculatedDaysSpan;
+let excludedDaysSpan;
+let excludeVacationsCheckbox;
+let excludeHolidaysCheckbox;
+let loadVacationsBtn;
+let vacationDisplay;
+let vacationList;
+let generateDatesBtn;
+let goalsContainer;
+let distributionBody;
+let addRowBtn;
+let exportPdfBtn;
+let exportJsonBtn;
+let importJsonBtn;
+let jsonFileInput;
+let rowTemplate;
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
+    initDOMElements();
     setupEventListeners();
     setupAiPromptModal();
     setDefaultDates();
     loadCachedVacations();
     addRow(); // Start mit einer leeren Zeile
 });
+
+function initDOMElements() {
+    subjectInput = document.getElementById('subject');
+    classNameInput = document.getElementById('class-name');
+    schoolYearInput = document.getElementById('school-year');
+    teacherNameInput = document.getElementById('teacher-name');
+    federalStateSelect = document.getElementById('federal-state');
+    startDateInput = document.getElementById('start-date');
+    totalLessonHoursInput = document.getElementById('total-lesson-hours');
+    hoursPerWeekInput = document.getElementById('hours-per-week');
+    weekdayCheckboxes = document.querySelectorAll('.weekday-checkbox input');
+    calculatedEndDateSpan = document.getElementById('calculated-end-date');
+    calculatedDaysSpan = document.getElementById('calculated-days');
+    excludedDaysSpan = document.getElementById('excluded-days');
+    excludeVacationsCheckbox = document.getElementById('exclude-vacations');
+    excludeHolidaysCheckbox = document.getElementById('exclude-holidays');
+    loadVacationsBtn = document.getElementById('load-vacations');
+    vacationDisplay = document.getElementById('vacation-display');
+    vacationList = document.getElementById('vacation-list');
+    generateDatesBtn = document.getElementById('generate-dates');
+    goalsContainer = document.getElementById('goals-container');
+    distributionBody = document.getElementById('distribution-body');
+    addRowBtn = document.getElementById('add-row');
+    exportPdfBtn = document.getElementById('export-pdf');
+    exportJsonBtn = document.getElementById('export-json');
+    importJsonBtn = document.getElementById('import-json');
+    jsonFileInput = document.getElementById('json-file-input');
+    rowTemplate = document.getElementById('row-template');
+}
 
 function setupEventListeners() {
     // Zeit-Berechnung
